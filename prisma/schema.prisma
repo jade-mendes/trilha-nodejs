@@ -19,17 +19,22 @@ model User {
   name           String
   email          String   @unique
   passwordHash   String   @map("password_hash")
-  profilePicture String?
+  profilePicture String?  @map("profile_picture")
   posts          Post[]
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("users")
 }
 
 model Post {
   id        Int      @id @default(autoincrement())
-  user      User?    @relation(fields: [userId], references: [id])
-  userId    Int?
+  publicId  String   @unique @default(uuid(7)) @map("public_id")
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int      @map("user_id")
   title     String
   content   String
   createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("posts")
 }
