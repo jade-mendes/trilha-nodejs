@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { prisma } from '@/libs/prisma.js'
 import type { FastifyRequest, FastifyReply } from 'fastify'
 
-export async function register(request: FastifyRequest, reply: FastifyReply){
+export async function createUser(request: FastifyRequest, reply: FastifyReply){
     const registerBodySchema = z.object({
         name: z.string().trim().min(1).max(100),
         email: z.email(),
