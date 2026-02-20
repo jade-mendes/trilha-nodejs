@@ -1,7 +1,4 @@
 import { z } from "zod";
-import { prisma } from "@/libs/prisma.js";
-import { hash } from 'bcryptjs'
-import { env } from "@/env/index.js";
 import type { FastifyRequest, FastifyReply } from "fastify";
 import {
   MIN_PASSWORD_SIZE,
@@ -9,6 +6,7 @@ import {
   MIN_USERNAME_SIZE,
   MAX_USERNAME_SIZE
 } from "@/constants/validation-constants.js";
+import { CreateUserUseCase } from "@/use-cases/users/create-user.js";
 
 
 export async function createUser(request: FastifyRequest, reply: FastifyReply) {
@@ -20,25 +18,11 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply) {
 
   const { name, email, password } = registerBodySchema.parse(request.body);
   
-  const userWithSameEmail = await prisma.user.findFirst({
-    where: {
-      OR: [{email}]
-    }
+  const { user } = await new CreateUserUseCase().execute({
+    name,
+    email,
+    password
   })
-
-  if (userWithSameEmail) {
-    return reply.status(409).send({message: "Já existe um usuário cadastrado com esse email"})
-  }
-  
-  const passwordHash = await hash(password, env.HASH_SALT_ROUNGS)
-
-  const user = await prisma.user.create({
-    data: {
-      name,
-      email,
-      passwordHash,
-    },
-  });
 
   return reply.status(201).send(user);
 }
