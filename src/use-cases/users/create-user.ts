@@ -1,8 +1,8 @@
 import type { User } from "@/@types/prisma/client.js";
 import { env } from "@/env/index.js";
-import type { UsersRepository } from "@/repositories/users-repository.js";
 import { hash } from "bcryptjs";
 import { UserAlreadyExsistsError } from "../errors/user-already-exists-error.js";
+import type { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
 
 interface CreateUserUseCaseRequest {
   name: string;
@@ -15,7 +15,7 @@ type CreateUserUseCaseResponse = {
 };
 
 export class CreateUserUseCase {
-  constructor(private usersRepository: UsersRepository) {}
+  constructor(private usersRepository: PrismaUsersRepository) {}
   async execute({
     name,
     email,
