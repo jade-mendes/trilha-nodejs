@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { prisma } from "@/libs/prisma.js";
+import { hash } from 'bcryptjs'
+import { env } from "@/env/index.js";
 import type { FastifyRequest, FastifyReply } from "fastify";
 import {
   MIN_PASSWORD_SIZE,
@@ -7,6 +9,7 @@ import {
   MIN_USERNAME_SIZE,
   MAX_USERNAME_SIZE
 } from "@/constants/validation-constants.js";
+
 
 export async function createUser(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
@@ -16,11 +19,14 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply) {
   });
 
   const { name, email, password } = registerBodySchema.parse(request.body);
+  
+  const passwordHash = await hash(password, env.HASH_SALT_ROUNGS)
+
   const user = await prisma.user.create({
     data: {
       name,
       email,
-      passwordHash: password,
+      passwordHash,
     },
   });
 
