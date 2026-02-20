@@ -8,6 +8,7 @@ import {
 } from "@/constants/validation-constants.js";
 import { CreateUserUseCase } from "@/use-cases/users/create-user.js";
 import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
+import { UserPresenter } from "@/http/presenters/user-presenter.js";
 
 
 export async function createUser(request: FastifyRequest, reply: FastifyReply) {
@@ -26,5 +27,5 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply) {
     password
   })
 
-  return reply.status(201).send(user);
+  return reply.status(201).send(UserPresenter.toHTTP(user));
 }
