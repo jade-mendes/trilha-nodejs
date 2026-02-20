@@ -1,6 +1,6 @@
 import type { User } from "@/@types/prisma/client.js";
 import { env } from "@/env/index.js";
-import { prisma } from "@/libs/prisma.js";
+import type { UsersRepository } from "@/repositories/users-repository.js";
 import { hash } from "bcryptjs";
 
 interface CreateUserUseCaseRequest {
@@ -14,16 +14,13 @@ type CreateUserUseCaseResponse = {
 };
 
 export class CreateUserUseCase {
+  constructor(private usersRepository: UsersRepository) {}
   async execute({
     name,
     email,
     password,
   }: CreateUserUseCaseRequest): Promise<CreateUserUseCaseResponse> {
-    const userWithSameEmail = await prisma.user.findFirst({
-      where: {
-        OR: [{ email }],
-      },
-    });
+    const userWithSameEmail = await this.usersRepository.findByEmail(email);
 
     if (userWithSameEmail) {
       throw new Error("E-mail already taken.");
@@ -31,13 +28,11 @@ export class CreateUserUseCase {
 
     const passwordHash = await hash(password, env.HASH_SALT_ROUNDS);
 
-    const user = await prisma.user.create({
-      data: {
+    const user = await this.usersRepository.create({
         name,
         email,
-        passwordHash,
-      },
-    });
+        passwordHash
+    })
 
     return { user };
   }

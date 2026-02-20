@@ -7,6 +7,7 @@ import {
   MAX_USERNAME_SIZE
 } from "@/constants/validation-constants.js";
 import { CreateUserUseCase } from "@/use-cases/users/create-user.js";
+import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
 
 
 export async function createUser(request: FastifyRequest, reply: FastifyReply) {
@@ -18,7 +19,8 @@ export async function createUser(request: FastifyRequest, reply: FastifyReply) {
 
   const { name, email, password } = registerBodySchema.parse(request.body);
   
-  const { user } = await new CreateUserUseCase().execute({
+  const usersRepository = new PrismaUsersRepository()
+  const { user } = await new CreateUserUseCase(usersRepository).execute({
     name,
     email,
     password
