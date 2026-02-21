@@ -1,5 +1,5 @@
 import type { User } from "@/@types/prisma/client.js";
-import type { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
+import type { IUsersRepository } from "@/repositories/users-repository.js";
 
 
 type ListUsersUseCaseResponse = {
@@ -7,7 +7,7 @@ type ListUsersUseCaseResponse = {
 };
 
 export class ListUsersUseCase {
-  constructor(private usersRepository: PrismaUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
   async execute(): Promise<ListUsersUseCaseResponse> {
     const users = await this.usersRepository.list()
     return { users }

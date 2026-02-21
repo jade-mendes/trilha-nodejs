@@ -2,7 +2,7 @@ import type { User } from "@/@types/prisma/client.js";
 import { env } from "@/env/index.js";
 import { hash } from "bcryptjs";
 import { UserAlreadyExsistsError } from "../errors/user-already-exists-error.js";
-import type { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
+import type { IUsersRepository } from "@/repositories/users-repository.js";
 
 interface CreateUserUseCaseRequest {
   name: string;
@@ -15,7 +15,7 @@ type CreateUserUseCaseResponse = {
 };
 
 export class CreateUserUseCase {
-  constructor(private usersRepository: PrismaUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
   async execute({
     name,
     email,

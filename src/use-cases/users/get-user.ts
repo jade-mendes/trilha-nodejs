@@ -1,6 +1,6 @@
 import type { User } from "@/@types/prisma/client.js";
-import type { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error.js";
+import type { IUsersRepository } from "@/repositories/users-repository.js";
 
 interface GetUserUseCaseRequest {
   publicId: string;
@@ -11,7 +11,7 @@ type GetUserUseCaseResponse = {
 };
 
 export class GetUserUseCase {
-  constructor(private usersRepository: PrismaUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
   async execute({
     publicId,
   }: GetUserUseCaseRequest): Promise<GetUserUseCaseResponse> {

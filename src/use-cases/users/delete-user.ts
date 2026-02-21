@@ -1,12 +1,12 @@
-import type { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository.js";
 import { ResourceNotFoundError } from "../errors/resource-not-found-error.js";
+import type { IUsersRepository } from "@/repositories/users-repository.js";
 
 interface DeleteUserUseCaseRequest {
   publicId: string;
 }
 
 export class DeleteUserUseCase {
-  constructor(private usersRepository: PrismaUsersRepository) {}
+  constructor(private usersRepository: IUsersRepository) {}
   async execute({ publicId }: DeleteUserUseCaseRequest) {
     const user = await this.usersRepository.findBy({ publicId });
     if (!user) {
