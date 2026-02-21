@@ -6,7 +6,7 @@ export async function listUsers(_request: FastifyRequest, reply: FastifyReply) {
   try {
     const listUsersUseCase = makeListUsersUseCase();
     const { users } = await listUsersUseCase.execute();
-    return reply.status(201).send(UserPresenter.toHTTP(users));
+    return reply.status(200).send(UserPresenter.toHTTP(users));
   } catch (error) {
     throw error
   }
