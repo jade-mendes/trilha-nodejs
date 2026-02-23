@@ -10,4 +10,14 @@ export class PrismaPostsRepository implements IPostsRepository {
     async list() {
         return await prisma.post.findMany()
     }
+
+    async delete(id: number) {
+        await prisma.post.delete({
+            where: {id}
+        })
+    }
+
+    async findBy(where: Prisma.PostWhereInput){
+        return await prisma.post.findFirst({where});
+    }
 }
