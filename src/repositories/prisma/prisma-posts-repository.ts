@@ -27,4 +27,10 @@ export class PrismaPostsRepository implements IPostsRepository {
             data
         })
     }
+
+    async findByUser(id: number) {
+        return await prisma.post.findMany({
+            where: {userId: id}
+        })
+    }
 }
