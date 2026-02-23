@@ -10,7 +10,7 @@ export async function listPosts(_request: FastifyRequest, reply: FastifyReply) {
     return reply.status(200).send(PostPresenter.toHTTP(posts));
   } catch (error) {
     if (error instanceof ResourceNotFoundError) {
-      throw new ResourceNotFoundError();
+      return reply.status(404).send({ message: error.message })
     }
     throw error;
   }
