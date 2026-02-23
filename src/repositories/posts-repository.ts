@@ -6,5 +6,5 @@ export interface IPostsRepository {
     //findByUser()
     list(): Promise<Post[]>
     delete(id: number): Promise<void>
-    //update(id: number, data: Prisma.PostUpdateInput): Promise<Post>
+    update(id: number, data: Prisma.PostUpdateInput): Promise<Post>
 }

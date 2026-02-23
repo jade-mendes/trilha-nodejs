@@ -20,4 +20,11 @@ export class PrismaPostsRepository implements IPostsRepository {
     async findBy(where: Prisma.PostWhereInput){
         return await prisma.post.findFirst({where});
     }
+
+    async update(id: number, data: Prisma.PostUpdateInput) {
+        return await prisma.post.update({
+            where: {id},
+            data
+        })
+    }
 }
