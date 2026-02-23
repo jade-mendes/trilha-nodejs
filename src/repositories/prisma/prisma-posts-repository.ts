@@ -6,4 +6,8 @@ export class PrismaPostsRepository implements IPostsRepository {
     async create(data: Prisma.PostUncheckedCreateInput) {
         return await prisma.post.create({data})
     }
+
+    async list() {
+        return await prisma.post.findMany()
+    }
 }
